@@ -1,0 +1,49 @@
+<!--Define the form and populate with handlebars input tags (required for passing the values to the javascript method "submitFormData()")-->
+<form>
+  Material Name:<br>
+  {{input type="text" value=name}}<br>
+
+  Thickness:<br>
+  {{input type="text" value=thickness}}<br>
+
+  K-Value:<br>
+  {{input type="text" value=k_value}}<br>
+
+  <!--On click, calls the "submitFormData()" method with the input values as parameters-->
+  <input type="submit" value="Add Material" {{action "submitFormData" name thickness k_value}}>
+</form>
+
+<table bgcolor="#BBBBBB" style="width:40%">
+  <tr class="TableHeaders">
+    <th colspan='5'>Materials</th>
+  </tr>
+  <tr class="TableHeaders">
+    <th>Material Name</th>
+    <th>Thickness, m</th>
+    <th>K-Value</th>
+    <th>Resistivity, K m<sup>2</sup>/W</th>
+    <th>Actions</th>
+  </tr>
+  
+  <!--Make sure the outside and inside surface models get loaded around all other data, then for each material in the model (which gets automatically populated with all currently saved materials, except for constants) creates an instance of the "material-entry" component with an index corresponding to its position in the store collection, for use later when deleting a material.
+  Subscribe the component deleteMaterial implementation to the index implementation-->
+  {{material-entry materialID=0 material=outsideSurface deleteMaterial='deleteMaterial'}}
+  {{#each model as |material index|}}
+    {{#unless material.is_const}}
+      {{material-entry materialID=index material=material deleteMaterial='deleteMaterial'}}
+    {{/unless}}
+  {{/each}}
+  {{material-entry materialID=0 material=insideSurface deleteMaterial='deleteMaterial'}}
+  
+  <!--Make the final calculations inside of handlebars-->
+  <tr>
+    <th colspan="3">Total</th>
+    <th>{{totalResistivity}}</th>
+    <th></th>
+  </tr>
+  <tr>
+    <th colspan="3">U-Value = 1/{{totalResistivity}}</th>
+    <th>{{uValue}}</th>
+    <th></th>
+  </tr>
+</table>
