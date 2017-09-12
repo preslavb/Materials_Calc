@@ -5,6 +5,7 @@
   <td>{{material.k_value}}</td>
   <td>{{round-number material.resistivityFinal 3}}</td>
   <td>
+    <!--Only draw the delete button for materials which are not constants-->
   	{{#unless material.is_const}}
       <button {{action "deleteMaterial" materialID}}>Delete Material</button>
     {{else}}

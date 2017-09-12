@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  //Store the outside and inside surface references from model for use in the template by direct reference
+  //Store the outside and inside surface references from the Store for use in the template by direct reference (using Handlebars)
   outsideSurface: Ember.computed('model', function() {
     return this.get('model').objectAt(0);
   }),
