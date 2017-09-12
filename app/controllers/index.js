@@ -17,12 +17,12 @@ export default Ember.Controller.extend({
       total += this.get('model').objectAt(i).get('resistivityFinal');
     }
 
-    return total.toFixed(3);
+    return total;
   }),
   
   //Calculate the U-Value every time model.length changes
   uValue: Ember.computed('model.length', function() {
-    return parseFloat(1/this.get('totalResistivity')).toFixed(3);
+    return 1/this.get('totalResistivity');
   }),
 
   //Create a Store record of a new material using the values from the form

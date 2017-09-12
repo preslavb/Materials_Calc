@@ -10,10 +10,10 @@ export default DS.Model.extend({
   //Calculate the resistivity of the material and round it down to the 3rd digit after the dot
   resistivityFinal: Ember.computed('thickness', 'k_value', 'resistivity', function()  {
   	if(this.get('resistivity') == undefined){
-  	  return parseFloat(parseFloat(this.get('thickness')/this.get('k_value')).toFixed(3));
+  	  return this.get('thickness')/this.get('k_value');
   	}
   	else{
-  	  return (this.get('resistivity'));
+  	  return this.get('resistivity');
   	}
   }),
   
