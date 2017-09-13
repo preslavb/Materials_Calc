@@ -1,30 +1,35 @@
 import Ember from 'ember';
 
-//Set the initial constants
+// Set the initial constants
 export default Ember.Route.extend({
-  model() {
+  model()
+  {
   	this.get('store').push({
   	  data: [{
   	  	id: 1,
   	  	type: 'material',
+
   	  	attributes: {
   	  	  name: "Outside Surface",
   	  	  thickness: "-",
-  	  	  k_value: "-",
+  	  	  kValue: "-",
   	  	  resistivity: 0.04,
-  	  	  is_const: true
+  	  	  isConst: true
   	  	},
+
   	  	relationships: {}
   	  },
+
   	  {
   	  	id: 2,
   	  	type: 'material',
+
   	  	attributes: {
   	  	  name: "Inside Surface",
   	  	  thickness: "-",
-  	  	  k_value: "-",
+  	  	  kValue: "-",
   	  	  resistivity: 0.13,
-  	  	  is_const: true
+  	  	  isConst: true
   	  	}
   	  }]
   	})
