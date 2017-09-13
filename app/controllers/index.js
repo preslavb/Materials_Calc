@@ -1,31 +1,37 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  //Store the outside and inside surface references from the Store for use in the template by direct reference (using Handlebars)
-  outsideSurface: Ember.computed('model', function() {
+
+  // Store the outside and inside surface references from the Store for use in the template by direct reference (using Handlebars)
+  outsideSurface: Ember.computed('model', function()
+  {
     return this.get('model').objectAt(0);
   }),
-  insideSurface: Ember.computed('model', function() {
+
+  insideSurface: Ember.computed('model', function()
+  {
     return this.get('model').objectAt(1);
   }),
-  
-  //Calculate the total resistivity every time model.length changes
-  totalResistivity: Ember.computed('model.length', function() {
+
+  // Calculate the total resistivity every time model.length changes
+  totalResistivity: Ember.computed('model.length', function()
+  {
     let total = 0;
 
-    for (var i = this.get('model').get('length') - 1; i >= 0; i--) {
-      total += this.get('model').objectAt(i).get('resistivityFinal');
-    }
+    this.get('model').forEach(record => {
+      total += record.get('resistivityFinal');
+    });
 
     return total;
   }),
-  
-  //Calculate the U-Value every time model.length changes
-  uValue: Ember.computed('model.length', function() {
-    return 1/this.get('totalResistivity');
+
+  // Calculate the U-Value every time model.length changes
+  uValue: Ember.computed('model.length', function()
+  {
+    return 1 / this.get('totalResistivity');
   }),
 
-  //Create a Store record of a new material using the values from the form
+  // Create a Store record of a new material using the values from the form
   actions: {
     submitFormData()
     {
@@ -51,21 +57,23 @@ export default Ember.Controller.extend({
         });
       }
 
-      //If there were no matches found, add the material to the model
-      if(!recordAlreadyInModel)  {
+      // If there were no matches found, add the material to the model
+      if (! recordAlreadyInModel) {
         this.store.createRecord('material', {
-        name: name,
-        thickness: thickness,
-        k_value: k_value
+          name: name,
+          thickness: thickness,
+          kValue: kValue
         });
       }
-      else  {
+
+      else {
         alert("Record already saved in materials");
       }
     },
 
-    deleteMaterial(materialID)  {
-      //Store a local copy of all materials currently in the Data Store, then delete the one corresponding to the ID of the component pressed
+    deleteMaterial(materialID)
+    {
+      // Store a local copy of all materials currently in the Data Store, then delete the one corresponding to the ID of the component pressed
       let materials = this.store.peekAll('material');
 
       materials.objectAt(materialID).destroyRecord();
