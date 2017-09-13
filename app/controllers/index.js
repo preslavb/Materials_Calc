@@ -27,23 +27,28 @@ export default Ember.Controller.extend({
 
   //Create a Store record of a new material using the values from the form
   actions: {
-    submitFormData(name, thickness, k_value) {
-      //Get all of the materials in model
+    submitFormData()
+    {
+      let { name, thickness, kValue } = this;
+
+      // Get all of the materials in model
       let recordsToCompare = this.store.peekAll('material');
-      //Bool tracking whether a match was found
+
+      // Bool tracking whether a match was found
       let recordAlreadyInModel = false;
 
-      //Only check the records for a match if there are any records in the model
-      if(recordsToCompare.get('length') != 0)  {
-        //Loop through all records and compare them to the one being added. If it is a complete match, then set the tracking bool to true
-        for (var i = 0 ; i < recordsToCompare.get('length'); i++) {          
-          let recordToCompare = recordsToCompare.objectAt(i);
+      // Only check the records for a match if there are any records in the model
+      if (recordsToCompare.get('length') !== 0) {
 
-          if (recordToCompare.get('name') == name && recordToCompare.get('thickness') == thickness && 
-              recordToCompare.get('k_value') == k_value) {
+        // Loop through all records and compare them to the one being added. If it is a complete match, then set the tracking bool to true
+        recordsToCompare.forEach(recordToCompare => {
+          if (recordToCompare.get('name') === name &&
+              recordToCompare.get('thickness') === thickness &&
+              recordToCompare.get('kValue') === kValue
+          ) {
             recordAlreadyInModel = true;
           }
-        }
+        });
       }
 
       //If there were no matches found, add the material to the model
