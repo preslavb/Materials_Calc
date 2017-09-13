@@ -1,54 +1,44 @@
-table
-{
-	border-collapse: collapse;
+table {
+  border-collapse: collapse;
 }
 
-tr
-{
-	height: 40px;
-	border: 1px solid #888888;
+tr {
+  height: 40px;
+  border: 1px solid #888888;
 }
 
-tr:nth-child(even)
-{
-	background: #EEEEEE;
+tr:nth-child(even) {
+  background: #EEEEEE;
 }
 
-tr:nth-child(odd)
-{
-	background: #FFFFFF;
+tr:nth-child(odd) {
+  background: #FFFFFF;
 }
 
-tr:nth-child(1), tr:nth-child(2)
-{
-	background: #BBBBBB;
+tr:nth-child(1), tr:nth-child(2) {
+  background: #BBBBBB;
 }
 
-th
-{
-	font-weight: bolder;
-	width: 25%;
-	padding: 5px 5px;
-	text-align: left;
+th {
+  font-weight: bolder;
+  width: 25%;
+  padding: 5px 5px;
+  text-align: left;
 }
 
-td
-{
-	text-align: right;
-	border-right: 1px solid #888888;
+td {
+  text-align: right;
+  border-right: 1px solid #888888;
 }
 
-td:nth-child(1), th:nth-child(1)
-{
-	text-align: left;
+td:nth-child(1), th:nth-child(1) {
+  text-align: left;
 }
 
-button
-{
-	width: 100%;
+button {
+  width: 100%;
 }
 
-input
-{
-	margin-bottom: 20px;
+input {
+  margin-bottom: 20px;
 }
