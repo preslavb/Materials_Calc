@@ -1,69 +1,74 @@
 import Ember from 'ember';
+import Calculator from 'internshi-project/classes/calculator';
 
 export default Ember.Controller.extend({
-  //Store the outside and inside surface references from the Store for use in the template by direct reference (using Handlebars)
-  outsideSurface: Ember.computed('model', function() {
-    return this.get('model').objectAt(0);
-  }),
-  insideSurface: Ember.computed('model', function() {
-    return this.get('model').objectAt(1);
-  }),
-  
-  //Calculate the total resistivity every time model.length changes
-  totalResistivity: Ember.computed('model.length', function() {
+  // Instantiate the calculator object
+  pvCalculator: Calculator.Calculator.create(),
+
+  // Properties to store the current value of the <select> fields
+  orientation: "North",
+  elevation: 30,
+  overshading: "Little or None",
+
+  // All available options for the select fields in an array
+  orientationOptions: [
+    "North",
+    "North-East",
+    "North-West",
+    "South",
+    "South-East",
+    "South-West"
+  ],
+
+  elevationOptions: [
+    30,
+    45,
+    60,
+    0,
+    1,
+    90
+  ],
+
+  overshadingOptions: [
+    "Little or None",
+    "Modest",
+    "Significant",
+    "Heavy"
+  ],
+
+  // Computed property for displaying the total energy generated on a yearly basis given all of the PVs in the Store
+  totalEnergyGenerated: Ember.computed('model.length', function()
+  {
     let total = 0;
 
-    for (var i = this.get('model').get('length') - 1; i >= 0; i--) {
-      total += this.get('model').objectAt(i).get('resistivityFinal');
-    }
+    this.get('model').forEach(pv => {
+      total += this.get('pvCalculator').getEnergyOutput(pv);
+      console.log(this.get('pvCalculator').get('solarRadiation'))
+    });
 
     return total;
   }),
-  
-  //Calculate the U-Value every time model.length changes
-  uValue: Ember.computed('model.length', function() {
-    return 1/this.get('totalResistivity');
-  }),
 
-  //Create a Store record of a new material using the values from the form
+  // Create a Store record of a new PV using the values from the form
   actions: {
-    submitFormData(name, thickness, k_value) {
-      //Get all of the materials in model
-      let recordsToCompare = this.store.peekAll('material');
-      //Bool tracking whether a match was found
-      let recordAlreadyInModel = false;
+    submitFormData()
+    {
+      this.store.createRecord('pv', {
+        peakPower: this.get("peakPower"),
+        orientation: this.get("orientation"),
+        elevation: this.get("elevation"),
+        overshading: this.get("overshading")
+      });
 
-      //Only check the records for a match if there are any records in the model
-      if(recordsToCompare.get('length') != 0)  {
-        //Loop through all records and compare them to the one being added. If it is a complete match, then set the tracking bool to true
-        for (var i = 0 ; i < recordsToCompare.get('length'); i++) {          
-          let recordToCompare = recordsToCompare.objectAt(i);
-
-          if (recordToCompare.get('name') == name && recordToCompare.get('thickness') == thickness && 
-              recordToCompare.get('k_value') == k_value) {
-            recordAlreadyInModel = true;
-          }
-        }
-      }
-
-      //If there were no matches found, add the material to the model
-      if(!recordAlreadyInModel)  {
-        this.store.createRecord('material', {
-        name: name,
-        thickness: thickness,
-        k_value: k_value
-        });
-      }
-      else  {
-        alert("Record already saved in materials");
-      }
+      let records = this.store.peekAll('pv');
     },
 
-    deleteMaterial(materialID)  {
-      //Store a local copy of all materials currently in the Data Store, then delete the one corresponding to the ID of the component pressed
-      let materials = this.store.peekAll('material');
+    deletePV(pvID)
+    {
+      // Store a local copy of all PVs currently in the Data Store, then delete the one corresponding to the ID of the component pressed
+      let records = this.store.peekAll('pv');
 
-      materials.objectAt(materialID).destroyRecord();
+      records.objectAt(pvID).destroyRecord();
     }
   }
 });
