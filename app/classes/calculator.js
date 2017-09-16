@@ -41,22 +41,22 @@ export const Calculator = Ember.Object.extend({
     let latitude = 55.9  * (Math.PI / 180);
 
     // The three values required for the formula
-    let a = fluxConstants[0] * Math.pow(Math.sin(elevation), 3) +
-            fluxConstants[1] * Math.pow(Math.sin(elevation), 2) +
-            fluxConstants[2] * Math.sin(elevation);
+    let a = (fluxConstants[0] * Math.pow(Math.sin(elevation/2), 3)) +
+            (fluxConstants[1] * Math.pow(Math.sin(elevation/2), 2)) +
+            (fluxConstants[2] * Math.sin(elevation/2));
 
-    let b = fluxConstants[3] * Math.pow(Math.sin(elevation), 3) +
-            fluxConstants[4] * Math.pow(Math.sin(elevation), 2) +
-            fluxConstants[5] * Math.sin(elevation);
+    let b = (fluxConstants[3] * Math.pow(Math.sin(elevation/2), 3)) +
+            (fluxConstants[4] * Math.pow(Math.sin(elevation/2), 2)) +
+            (fluxConstants[5] * Math.sin(elevation/2));
 
-    let c = fluxConstants[6] * Math.pow(Math.sin(elevation), 3) +
-            fluxConstants[7] * Math.pow(Math.sin(elevation), 2) +
-            fluxConstants[8] * Math.sin(elevation) + 1;
+    let c = (fluxConstants[6] * Math.pow(Math.sin(elevation/2), 3)) +
+            (fluxConstants[7] * Math.pow(Math.sin(elevation/2), 2)) +
+            (fluxConstants[8] * Math.sin(elevation/2)) + 1;
 
     let conversionFactor = [];
 
     for (var i = 0; i < 12; i++) {
-      conversionFactor[i] = (a * Math.cos(latitude - (declanation[i]  * (Math.PI / 180)))) + (b * Math.cos(latitude - (declanation[i] * (Math.PI / 180)))) + c;
+      conversionFactor[i] = (a * Math.pow(Math.cos(latitude - (declanation[i]  * (Math.PI / 180))), 2)) + (b * Math.cos(latitude - (declanation[i] * (Math.PI / 180)))) + c;
     }
     return conversionFactor;
   }),

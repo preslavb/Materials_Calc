@@ -15,9 +15,11 @@ export default Ember.Controller.extend({
     "North",
     "North-East",
     "North-West",
-    "South",
+    "East",
+    "West",
     "South-East",
-    "South-West"
+    "South-West",
+    "South"
   ],
 
   elevationOptions: [
@@ -25,7 +27,6 @@ export default Ember.Controller.extend({
     45,
     60,
     0,
-    1,
     90
   ],
 
@@ -43,7 +44,6 @@ export default Ember.Controller.extend({
 
     this.get('model').forEach(pv => {
       total += this.get('pvCalculator').getEnergyOutput(pv);
-      console.log(this.get('pvCalculator').get('solarRadiation'))
     });
 
     return total;
